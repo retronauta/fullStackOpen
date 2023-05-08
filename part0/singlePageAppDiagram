@@ -1,0 +1,8 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over browser:
+The SPA version of the app does not send the
+form data in the traditional way,
+but instead uses the JavaScript code
+it fetched from the server.
+end note
