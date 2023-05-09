@@ -6,9 +6,10 @@ const Button = ({ handleClick, text }) => (
 
 const Feedback = ({ text, state }) => {
   return (
-    <p>
-      {text} {state}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{state}</td>
+    </tr>
   );
 };
 
@@ -17,12 +18,17 @@ const Statistics = ({ good, neutral, bad, total }) => {
     return (
       <>
         <h1>Statistics</h1>
-        <Feedback text="good" state={good} />
-        <Feedback text="neutral" state={neutral} />
-        <Feedback text="bad" state={bad} />
-        <Total total={total} />
-        <Average total={total} />
-        <PositivePercentage good={good} total={total} />
+
+        <table>
+          <tbody>
+            <Feedback text="good" state={good} />
+            <Feedback text="neutral" state={neutral} />
+            <Feedback text="bad" state={bad} />
+            <Feedback text="all" state={total} />
+            <Average total={total} />
+            <PositivePercentage good={good} total={total} />
+          </tbody>
+        </table>
       </>
     );
   }
@@ -34,16 +40,22 @@ const Statistics = ({ good, neutral, bad, total }) => {
   );
 };
 
-const Total = ({ total }) => {
-  return <p>All {total}</p>;
-};
-
 const Average = ({ total }) => {
-  return <p>Average {total / 3}</p>;
+  return (
+    <tr>
+      <td>average</td>
+      <td>{(total / 3).toFixed(1)}</td>
+    </tr>
+  );
 };
 
 const PositivePercentage = ({ good, total }) => {
-  return <p>Positive {(good / total) * 100}</p>;
+  return (
+    <tr>
+      <td>positive</td>
+      <td>{((good / total) * 100).toFixed(1)} %</td>
+    </tr>
+  );
 };
 
 function App() {
