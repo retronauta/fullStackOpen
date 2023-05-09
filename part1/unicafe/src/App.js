@@ -13,15 +13,23 @@ const Feedback = ({ text, state }) => {
 };
 
 const Statistics = ({ good, neutral, bad, total }) => {
+  if (total) {
+    return (
+      <>
+        <h1>Statistics</h1>
+        <Feedback text="good" state={good} />
+        <Feedback text="neutral" state={neutral} />
+        <Feedback text="bad" state={bad} />
+        <Total total={total} />
+        <Average total={total} />
+        <PositivePercentage good={good} total={total} />
+      </>
+    );
+  }
+
   return (
     <>
-      <h1>Statistics</h1>
-      <Feedback text="good" state={good} />
-      <Feedback text="neutral" state={neutral} />
-      <Feedback text="bad" state={bad} />
-      <Total total={total} />
-      <Average total={total} />
-      <PositivePercentage good={good} total={total} />
+      <p>No feedback given</p>
     </>
   );
 };
