@@ -22,13 +22,11 @@ const Content = ({ parts }) => {
   );
 };
 
-const Part = props => {
-  return (
-    <p>
-      {props.name} {props.exercises}
-    </p>
-  );
-};
+const Part = ({ name, exercises }) => (
+  <p>
+    {name} {exercises}
+  </p>
+);
 
 const Total = ({ parts }) => {
   const sumExercises = parts.reduce((acc, obj) => {
