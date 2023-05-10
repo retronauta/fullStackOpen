@@ -1,11 +1,20 @@
 import { useState } from "react";
 
-const DisplayAnecdotes = ({ anecdotes, selected }) => {
-  return <div>{anecdotes[selected]}</div>;
+const DisplayAnecdotes = ({ anecdotes, selected, votes }) => {
+  return (
+    <>
+      <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+    </>
+  );
 };
 
-const Button = ({ handleClick }) => {
+const RandomButton = ({ handleClick }) => {
   return <button onClick={handleClick}>Next anecdote</button>;
+};
+
+const VoteButton = ({ handleVotes }) => {
+  return <button onClick={handleVotes}>Vote</button>;
 };
 
 function App() {
@@ -21,16 +30,28 @@ function App() {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(8).fill(0));
 
   const handleClick = () => {
     const randomNumber = Math.floor(Math.random() * 8);
     setSelected(randomNumber);
   };
 
+  const handleVotes = () => {
+    const copyVotes = [...votes];
+    copyVotes[selected] += 1;
+    setVotes(copyVotes);
+  };
+
   return (
     <>
-      <DisplayAnecdotes anecdotes={anecdotes} selected={selected} />
-      <Button handleClick={handleClick} />
+      <DisplayAnecdotes
+        anecdotes={anecdotes}
+        selected={selected}
+        votes={votes}
+      />
+      <VoteButton handleVotes={handleVotes} />
+      <RandomButton handleClick={handleClick} />
     </>
   );
 }
