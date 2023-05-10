@@ -9,12 +9,12 @@ const DisplayAnecdotes = ({ anecdotes, selected, votes }) => {
   );
 };
 
-const RandomButton = ({ handleClick }) => {
-  return <button onClick={handleClick}>Next anecdote</button>;
+const MostVoted = ({ most }) => {
+  return <p>{most}</p>;
 };
 
-const VoteButton = ({ handleVotes }) => {
-  return <button onClick={handleVotes}>Vote</button>;
+const Button = ({ handleClick, text }) => {
+  return <button onClick={handleClick}>{text}</button>;
 };
 
 function App() {
@@ -32,7 +32,9 @@ function App() {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(8).fill(0));
 
-  const handleClick = () => {
+  const mostVotedIndex = votes.indexOf(Math.max(...votes));
+
+  const randomizeAnecdotes = () => {
     const randomNumber = Math.floor(Math.random() * 8);
     setSelected(randomNumber);
   };
@@ -50,8 +52,12 @@ function App() {
         selected={selected}
         votes={votes}
       />
-      <VoteButton handleVotes={handleVotes} />
-      <RandomButton handleClick={handleClick} />
+      <Button text="Vote" handleClick={handleVotes} />
+      <Button text="Next anecdote" handleClick={randomizeAnecdotes} />
+      <h1>Anecdote with most votes</h1>
+      <MostVoted
+        most={votes[mostVotedIndex] === 0 ? "" : anecdotes[mostVotedIndex]}
+      />
     </>
   );
 }
