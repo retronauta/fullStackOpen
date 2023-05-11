@@ -24,9 +24,14 @@ function App() {
 
   const addNewPerson = event => {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }));
+    findDuplicate(persons, newName) >= 0
+      ? alert(`${newName} is already added to phonebook`)
+      : setPersons(persons.concat({ name: newName }));
     setNewName("");
   };
+
+  const findDuplicate = (arr, item) =>
+    arr.findIndex(person => person.name === item);
 
   return (
     <div>
