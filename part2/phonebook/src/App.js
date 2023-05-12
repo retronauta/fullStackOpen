@@ -1,29 +1,17 @@
 import { useState } from "react";
-
-const DisplayNumbers = ({ persons }) => {
-  return (
-    <>
-      {persons.map(person => (
-        <Person name={person.name} number={person.number} key={person.name} />
-      ))}
-    </>
-  );
-};
-
-const Person = ({ name, number }) => {
-  return (
-    <p>
-      {name} {number}
-    </p>
-  );
-};
+import DisplayNumbers from "./Components/DisplayNumbers";
 
 function App() {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-1234567" },
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
+
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleName = event => {
     setNewName(event.target.value);
@@ -31,6 +19,10 @@ function App() {
 
   const handleNumber = event => {
     setNewNumber(event.target.value);
+  };
+
+  const handleQuery = event => {
+    setSearchQuery(event.target.value);
   };
 
   const addNewPerson = event => {
@@ -48,6 +40,11 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        Filter shown with
+        <input type="text" value={searchQuery} onChange={handleQuery} />
+      </div>
+      <h2>add new</h2>
       <form onSubmit={addNewPerson}>
         <div>
           name: <input value={newName} onChange={handleName} />
@@ -60,7 +57,7 @@ function App() {
         </div>
       </form>
       <h2>Numbers</h2>
-      <DisplayNumbers persons={persons} />
+      <DisplayNumbers persons={persons} searchQuery={searchQuery} />
     </div>
   );
 }
