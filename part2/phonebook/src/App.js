@@ -1,5 +1,7 @@
 import { useState } from "react";
 import DisplayNumbers from "./Components/DisplayNumbers";
+import PersonForm from "./Components/PersonForm";
+import Filter from "./Components/Filter";
 
 function App() {
   const [persons, setPersons] = useState([
@@ -12,6 +14,8 @@ function App() {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  //* ##### HANDLERS ######
 
   const handleName = event => {
     setNewName(event.target.value);
@@ -40,22 +44,18 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter shown with
-        <input type="text" value={searchQuery} onChange={handleQuery} />
-      </div>
+
+      <Filter searchQuery={searchQuery} handleQuery={handleQuery} />
+
       <h2>add new</h2>
-      <form onSubmit={addNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleName} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        addNewPerson={addNewPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handleName={handleName}
+        handleNumber={handleNumber}
+      />
+
       <h2>Numbers</h2>
       <DisplayNumbers persons={persons} searchQuery={searchQuery} />
     </div>
