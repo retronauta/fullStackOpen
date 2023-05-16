@@ -29,12 +29,18 @@ function App() {
   const handleQuery = event => {
     setSearchQuery(event.target.value);
   };
+  //* #########################
 
   const addNewPerson = event => {
     event.preventDefault();
+    const newPerson = { name: newName, number: newNumber };
+
     findDuplicate(persons, newName) >= 0
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat({ name: newName, number: newNumber }));
+      : axios
+          .post("http://localhost:3001/persons", newPerson)
+          .then(response => setPersons(persons.concat(response.data)));
+
     setNewName("");
     setNewNumber("");
   };
