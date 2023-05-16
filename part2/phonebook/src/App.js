@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     personservice.getPersons().then(data => setPersons(data));
-  });
+  }, []);
 
   //* ##### HANDLERS ######
 
@@ -43,6 +43,15 @@ function App() {
     setNewNumber("");
   };
 
+  const handleDeletePerson = id => {
+    const confirm = window.confirm("Mensaje de prueba");
+    if (confirm) {
+      personservice.deletePerson(id);
+      setPersons(persons.filter(person => person.id !== id));
+    }
+    return "";
+  };
+
   const findDuplicate = (arr, item) =>
     arr.findIndex(person => person.name === item);
 
@@ -62,7 +71,11 @@ function App() {
       />
 
       <h2>Numbers</h2>
-      <DisplayNumbers persons={persons} searchQuery={searchQuery} />
+      <DisplayNumbers
+        persons={persons}
+        searchQuery={searchQuery}
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   );
 }

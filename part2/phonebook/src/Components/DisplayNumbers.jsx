@@ -1,7 +1,7 @@
 import React from "react";
 import Person from "./Person";
 
-const DisplayNumbers = ({ persons, searchQuery }) => {
+const DisplayNumbers = ({ persons, searchQuery, handleDeletePerson }) => {
   const personsToShow =
     searchQuery === ""
       ? persons
@@ -14,7 +14,13 @@ const DisplayNumbers = ({ persons, searchQuery }) => {
   return (
     <>
       {personsToShow.map(person => (
-        <Person name={person.name} number={person.number} key={person.name} />
+        <Person
+          name={person.name}
+          number={person.number}
+          key={person.name}
+          id={person.id}
+          handleDeletePerson={handleDeletePerson}
+        />
       ))}
     </>
   );
