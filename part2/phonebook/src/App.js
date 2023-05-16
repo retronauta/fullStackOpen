@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DisplayNumbers from "./Components/DisplayNumbers";
 import PersonForm from "./Components/PersonForm";
 import Filter from "./Components/Filter";
-import axios from "axios";
+import personservice from "./services/persons";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -11,10 +11,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => setPersons(response.data));
-  }, []);
+    personservice.getPersons().then(data => setPersons(data));
+  });
 
   //* ##### HANDLERS ######
 
@@ -37,9 +35,9 @@ function App() {
 
     findDuplicate(persons, newName) >= 0
       ? alert(`${newName} is already added to phonebook`)
-      : axios
-          .post("http://localhost:3001/persons", newPerson)
-          .then(response => setPersons(persons.concat(response.data)));
+      : personservice
+          .addPerson(newPerson)
+          .then(person => setPersons(persons.concat(person)));
 
     setNewName("");
     setNewNumber("");
