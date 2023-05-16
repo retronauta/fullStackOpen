@@ -43,8 +43,8 @@ function App() {
     setNewNumber("");
   };
 
-  const handleDeletePerson = id => {
-    const confirm = window.confirm("Mensaje de prueba");
+  const handleDeletePerson = (id, name) => {
+    const confirm = window.confirm(`Delete ${name}?`);
     if (confirm) {
       personservice.deletePerson(id);
       setPersons(persons.filter(person => person.id !== id));
