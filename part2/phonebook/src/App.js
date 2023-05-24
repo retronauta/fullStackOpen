@@ -3,12 +3,14 @@ import DisplayNumbers from "./Components/DisplayNumbers";
 import PersonForm from "./Components/PersonForm";
 import Filter from "./Components/Filter";
 import personservice from "./services/persons";
+import Notification from "./Components/Notification";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [messageNotification, setMessageNotification] = useState(null);
 
   useEffect(() => {
     personservice.getPersons().then(data => setPersons(data));
@@ -49,12 +51,20 @@ function App() {
                 person.id !== editedPerson.id ? person : returnedPerson
               )
             );
+            setMessageNotification(`${editedPerson.name}'s number was changed`);
+            setTimeout(() => {
+              setMessageNotification(null);
+            }, 3000);
           });
       }
     } else {
-      personservice
-        .addPerson(newPerson)
-        .then(person => setPersons(persons.concat(person)));
+      personservice.addPerson(newPerson).then(person => {
+        setPersons(persons.concat(person));
+        setMessageNotification(`${person.name} was added`);
+        setTimeout(() => {
+          setMessageNotification(null);
+        }, 3000);
+      });
     }
 
     setNewName("");
@@ -76,9 +86,8 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={messageNotification} />
       <Filter searchQuery={searchQuery} handleQuery={handleQuery} />
-
       <h2>add new</h2>
       <PersonForm
         addNewPerson={addNewPerson}
@@ -87,7 +96,6 @@ function App() {
         handleName={handleName}
         handleNumber={handleNumber}
       />
-
       <h2>Numbers</h2>
       <DisplayNumbers
         persons={persons}
