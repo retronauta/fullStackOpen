@@ -33,11 +33,29 @@ function App() {
     event.preventDefault();
     const newPerson = { name: newName, number: newNumber };
 
-    findDuplicate(persons, newName) >= 0
-      ? alert(`${newName} is already added to phonebook`)
-      : personservice
-          .addPerson(newPerson)
-          .then(person => setPersons(persons.concat(person)));
+    //* Verifico que la nueva persona no este duplicada
+    if (findDuplicate(persons, newName) >= 0) {
+      const confirm = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+
+      if (confirm) {
+        const editedPerson = persons.find(person => person.name === newName);
+        personservice
+          .editNumber(editedPerson.id, { ...editedPerson, number: newNumber })
+          .then(returnedPerson => {
+            setPersons(
+              persons.map(person =>
+                person.id !== editedPerson.id ? person : returnedPerson
+              )
+            );
+          });
+      }
+    } else {
+      personservice
+        .addPerson(newPerson)
+        .then(person => setPersons(persons.concat(person)));
+    }
 
     setNewName("");
     setNewNumber("");
