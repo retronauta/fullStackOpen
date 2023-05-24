@@ -11,6 +11,7 @@ function App() {
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [messageNotification, setMessageNotification] = useState(null);
+  const [fail, setFail] = useState(false);
 
   useEffect(() => {
     personservice.getPersons().then(data => setPersons(data));
@@ -29,6 +30,10 @@ function App() {
   const handleQuery = event => {
     setSearchQuery(event.target.value);
   };
+
+  const resetMessage = setTimeout(() => {
+    setMessageNotification(null);
+  }, 3000);
   //* #########################
 
   const addNewPerson = event => {
@@ -55,6 +60,22 @@ function App() {
             setTimeout(() => {
               setMessageNotification(null);
             }, 3000);
+          })
+          .catch(error => {
+            setFail(true);
+            setMessageNotification(
+              `Information of ${editedPerson.name} has already removed from server`
+            );
+
+            setTimeout(() => {
+              setMessageNotification(null);
+            }, 3000);
+            // resetMessage();
+            setPersons(
+              persons.filter(person => {
+                return person.name !== editedPerson.name;
+              })
+            );
           });
       }
     } else {
@@ -64,6 +85,7 @@ function App() {
         setTimeout(() => {
           setMessageNotification(null);
         }, 3000);
+        // resetMessage();
       });
     }
 
@@ -74,8 +96,25 @@ function App() {
   const handleDeletePerson = (id, name) => {
     const confirm = window.confirm(`Delete ${name}?`);
     if (confirm) {
-      personservice.deletePerson(id);
-      setPersons(persons.filter(person => person.id !== id));
+      personservice
+        .deletePerson(id)
+        .then(message => {
+          setMessageNotification(`${name} was deleted`);
+          setTimeout(() => {
+            setMessageNotification(null);
+          }, 3000);
+          // resetMessage();
+          setPersons(persons.filter(person => person.id !== id));
+        })
+        .catch(error => {
+          setFail(true);
+          setMessageNotification(`${name} has already removed from server`);
+          setTimeout(() => {
+            setMessageNotification(null);
+          }, 3000);
+          // resetMessage();
+          setPersons(persons.filter(person => person.id !== id));
+        });
     }
     return "";
   };
@@ -86,7 +125,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={messageNotification} />
+      <Notification message={messageNotification} fail={fail} />
       <Filter searchQuery={searchQuery} handleQuery={handleQuery} />
       <h2>add new</h2>
       <PersonForm

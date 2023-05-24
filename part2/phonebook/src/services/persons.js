@@ -12,7 +12,8 @@ const addPerson = newPerson => {
 };
 
 const deletePerson = id => {
-  axios.delete(`${url}/${id}`);
+  const request = axios.delete(`${url}/${id}`);
+  return request.then(response => response.data);
 };
 
 const editNumber = (id, newObject) => {
