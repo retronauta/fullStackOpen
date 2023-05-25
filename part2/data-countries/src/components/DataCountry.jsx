@@ -1,6 +1,6 @@
 import React from "react";
 
-const OneResult = ({ country }) => {
+const DataCountry = ({ country }) => {
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -21,4 +21,4 @@ const OneResult = ({ country }) => {
   );
 };
 
-export default OneResult;
+export default DataCountry;

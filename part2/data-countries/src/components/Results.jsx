@@ -1,6 +1,6 @@
 import React from "react";
 import MoreTenResults from "./MoreTenResults";
-import OneResult from "./OneResult";
+import DataCountry from "./DataCountry";
 
 const Results = ({ countries, searchQuery }) => {
   const filteredCountries = countries.filter(country => {
@@ -16,7 +16,7 @@ const Results = ({ countries, searchQuery }) => {
     return <p>Too many matches, specify another filter</p>;
 
   if (searchQuery && coincidences === 1)
-    return <OneResult country={filteredCountries[0]} />;
+    return <DataCountry country={filteredCountries[0]} />;
 
   return (
     <>

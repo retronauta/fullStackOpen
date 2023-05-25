@@ -1,10 +1,11 @@
 import React from "react";
+import Country from "./Country";
 
 const MoreTenResults = ({ countries }) => {
   return (
     <div>
       {countries.map(country => (
-        <p key={country.ccn3}>{country.name.common}</p>
+        <Country country={country} key={country.name.common} />
       ))}
     </div>
   );
