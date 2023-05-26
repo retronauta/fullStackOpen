@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import MoreTenResults from "./MoreTenResults";
 import DataCountry from "./DataCountry";
+import weatherService from "../services/weatherService";
 
 const Results = ({ countries, searchQuery }) => {
+  const [weather, setWeather] = useState({});
+
   const filteredCountries = countries.filter(country => {
     return (
       country.name.common.includes(searchQuery) ||
@@ -15,8 +18,9 @@ const Results = ({ countries, searchQuery }) => {
   if (searchQuery && coincidences > 10)
     return <p>Too many matches, specify another filter</p>;
 
-  if (searchQuery && coincidences === 1)
+  if (searchQuery && coincidences === 1) {
     return <DataCountry country={filteredCountries[0]} />;
+  }
 
   return (
     <>

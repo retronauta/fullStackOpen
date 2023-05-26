@@ -1,5 +1,3 @@
-import React from "react";
-
 const DataCountry = ({ country }) => {
   return (
     <div>
@@ -17,6 +15,15 @@ const DataCountry = ({ country }) => {
       </ul>
 
       <img src={country.flags.png} alt="Flag of country" />
+      <h2>Weather in {country.capital}</h2>
+
+      {/* <p>
+        lat: {country.capitalInfo.latlng[0]}, long:
+        {country.capitalInfo.latlng[1]}
+      </p> */}
+      <p>Temperature:{} </p>
+
+      <p>Wind: </p>
     </div>
   );
 };
