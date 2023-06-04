@@ -79,14 +79,23 @@ function App() {
           });
       }
     } else {
-      personservice.addPerson(newPerson).then(person => {
-        setPersons(persons.concat(person));
-        setMessageNotification(`${person.name} was added`);
-        setTimeout(() => {
-          setMessageNotification(null);
-        }, 3000);
-        // resetMessage();
-      });
+      personservice
+        .addPerson(newPerson)
+        .then(person => {
+          setPersons(persons.concat(person));
+          setMessageNotification(`${person.name} was added`);
+          setTimeout(() => {
+            setMessageNotification(null);
+          }, 5000);
+          // resetMessage();
+        })
+        .catch(error => {
+          // console.log(error.response.data.error);
+          setMessageNotification(error.response.data.error);
+          setTimeout(() => {
+            setMessageNotification(null);
+          }, 5000);
+        });
     }
 
     setNewName("");
