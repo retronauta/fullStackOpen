@@ -32,4 +32,32 @@ const mostBlogs = blogs => {
   return sortResults[result.length - 1];
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+const mostLikes = blogs => {
+  let result = [];
+
+  blogs.forEach(blog => {
+    const exists = result.find(obj => obj.author === blog.author);
+    if (!exists) {
+      result.push({ author: blog.author, likes: blog.likes });
+    } else {
+      const duplicatedAuthorIndex = result.findIndex(
+        obj => obj.author === blog.author
+      );
+
+      const currentObject = result[duplicatedAuthorIndex];
+
+      result[duplicatedAuthorIndex] = {
+        ...result[duplicatedAuthorIndex],
+        likes: blog.likes + result[duplicatedAuthorIndex].likes,
+      };
+    }
+  });
+  result = _.sortBy(result, [
+    function (o) {
+      return o.likes;
+    },
+  ]);
+  return result[result.length - 1];
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
