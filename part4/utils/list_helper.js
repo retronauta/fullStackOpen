@@ -13,4 +13,10 @@ const totalLikes = blogs => {
   }
 };
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = blogs => {
+  const likesArr = blogs.map(blog => blog.likes);
+  const maxNumber = Math.max(...likesArr);
+  return blogs[likesArr.indexOf(maxNumber)];
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog };
