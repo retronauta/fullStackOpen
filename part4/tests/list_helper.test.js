@@ -94,4 +94,11 @@ describe('likes', () => {
       __v: 0,
     });
   });
+
+  test('author with most blogs', () => {
+    expect(listHelper.mostBlogs(bigList)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    });
+  });
 });
