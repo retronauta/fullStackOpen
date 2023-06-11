@@ -51,6 +51,23 @@ describe('blog tests', () => {
     const totalBlogs = await api.get('/api/blogs');
     expect(totalBlogs.body).toHaveLength(helper.initialBlogs.length + 1);
   });
+
+  test('verifies if like property is missing from the request', async () => {
+    const newBlogPost = {
+      title: 'Use git like a senior engineer',
+      author: 'Jacob Bennett',
+      url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
+      likes: 2,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    expect(newBlogPost).toHaveProperty('likes');
+  });
 });
 
 afterAll(async () => {
