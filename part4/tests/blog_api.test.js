@@ -33,6 +33,24 @@ describe('blog tests', () => {
 
     expect(id).toBeDefined();
   });
+
+  test('verifies that http post request creates a new blog post', async () => {
+    const newBlogPost = {
+      title: 'Use git like a senior engineer',
+      author: 'Jacob Bennett',
+      url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
+      likes: 4,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const totalBlogs = await api.get('/api/blogs');
+    expect(totalBlogs.body).toHaveLength(helper.initialBlogs.length + 1);
+  });
 });
 
 afterAll(async () => {
