@@ -26,6 +26,13 @@ describe('blog tests', () => {
     const response = await api.get('/api/blogs');
     expect(response.body).toHaveLength(helper.initialBlogs.length);
   });
+
+  test('verifies that identifier of blog is id', async () => {
+    const response = await api.get('/api/blogs');
+    const id = response.body[0].id;
+
+    expect(id).toBeDefined();
+  });
 });
 
 afterAll(async () => {
