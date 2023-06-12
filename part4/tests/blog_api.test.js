@@ -75,10 +75,22 @@ describe('blog tests', () => {
       likes: 2,
     };
 
-    await api
-      .post('/api/blogs')
-      .send(newBlogPost)
-      .expect(400)
+    await api.post('/api/blogs').send(newBlogPost).expect(400);
+  });
+
+  test('check deletion of a note', async () => {
+    const blogsAtStart = await helper.blogsInDb();
+    const blogToDelete = blogsAtStart[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAtTheEnd = await helper.blogsInDb();
+
+    expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+    const titles = blogsAtTheEnd.map(r => r.title);
+
+    expect(titles).not.toContain(blogToDelete.title);
   });
 });
 
