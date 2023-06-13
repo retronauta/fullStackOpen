@@ -92,6 +92,27 @@ describe('blog tests', () => {
 
     expect(titles).not.toContain(blogToDelete.title);
   });
+
+  test('check updated likes', async () => {
+    const blogsAtStart = await helper.blogsInDb();
+    const blogToUpdate = blogsAtStart[0];
+
+    const updatedBlog = {
+      title: blogToUpdate.title,
+      url: blogToUpdate.url,
+      author: blogToUpdate.author,
+      likes: 18,
+    };
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200);
+
+    const blogsAtTheEnd = await helper.blogsInDb();
+
+    expect(blogsAtTheEnd[0].likes).toBe(updatedBlog.likes);
+  });
 });
 
 afterAll(async () => {
