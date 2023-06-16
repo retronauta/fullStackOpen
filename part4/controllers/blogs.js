@@ -3,14 +3,14 @@ const Blog = require('../models/blog');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-const getTokenFrom = req => {
-  const authorization = req.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '');
-  }
+// const getTokenFrom = req => {
+//   const authorization = req.get('authorization');
+//   if (authorization && authorization.startsWith('Bearer ')) {
+//     return authorization.replace('Bearer ', '');
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 blogRouter.get('/', async (req, res, next) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -23,7 +23,7 @@ blogRouter.get('/', async (req, res, next) => {
 
 blogRouter.post('/', async (req, res, next) => {
   // const users = await User.find({});
-  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET);
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
   // const filteredUsers = users.map(u => u.toJSON());
   // const randomNumber = Math.floor(Math.random() * filteredUsers.length);
   // const randomUser = filteredUsers[randomNumber];
