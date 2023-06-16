@@ -1,6 +1,16 @@
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+
+const getTokenFrom = req => {
+  const authorization = req.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '');
+  }
+
+  return null;
+};
 
 blogRouter.get('/', async (req, res, next) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -12,19 +22,25 @@ blogRouter.get('/', async (req, res, next) => {
 });
 
 blogRouter.post('/', async (req, res, next) => {
-  const users = await User.find({});
-  const filteredUsers = users.map(u => u.toJSON());
-  const randomNumber = Math.floor(Math.random() * filteredUsers.length);
-  const randomUser = filteredUsers[randomNumber];
-  const user = await User.findById(randomUser.id);
+  // const users = await User.find({});
+  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET);
+  // const filteredUsers = users.map(u => u.toJSON());
+  // const randomNumber = Math.floor(Math.random() * filteredUsers.length);
+  // const randomUser = filteredUsers[randomNumber];
+  const user = await User.findById(decodedToken.id);
 
   const { title, url, likes } = req.body;
+
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token invalid' });
+  }
+
   const blog = new Blog({
     title,
-    author: randomUser.name,
+    author: user.name,
     url,
     likes: likes || 0,
-    user: randomUser.id,
+    user: user.id,
   });
 
   const savedBlog = await blog.save();
