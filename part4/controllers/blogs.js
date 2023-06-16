@@ -27,7 +27,7 @@ blogRouter.post('/', async (req, res, next) => {
   // const filteredUsers = users.map(u => u.toJSON());
   // const randomNumber = Math.floor(Math.random() * filteredUsers.length);
   // const randomUser = filteredUsers[randomNumber];
-  const user = await User.findById(decodedToken.id);
+  const user = req.user;
 
   const { title, url, likes } = req.body;
 
@@ -51,14 +51,23 @@ blogRouter.post('/', async (req, res, next) => {
 
 blogRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const decodedToken = jwt.verify(req.token, process.env.SECRET);
   const blogPost = await Blog.findById(id);
+  const user = req.user;
 
-  if (blogPost.user.toString() === decodedToken.id) {
+  if (!user) {
+    res.status(401).json({ error: 'token invalid' });
+  }
+
+  if (user._id.toString() === blogPost.user.toString()) {
     await Blog.findByIdAndRemove(id);
+    const index = user.blogs.indexOf(blogPost._id);
+    let updatedUserBlogs = user.blogs;
+    updatedUserBlogs.splice(index, 1);
+    user.blogs = updatedUserBlogs;
+    await user.save();
+
     return res.status(204).end();
   }
-  res.status(401).json({ error: 'token invalid' });
 });
 
 blogRouter.put('/:id', async (req, res) => {
