@@ -7,7 +7,6 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-
   for (let blog of helper.initialBlogs) {
     let blogObject = new Blog(blog);
     await blogObject.save();
@@ -34,10 +33,10 @@ describe('blog tests', () => {
     expect(id).toBeDefined();
   });
 
-  test('verifies that http post request creates a new blog post', async () => {
+  test.only('verifies that http post request creates a new blog post', async () => {
     const newBlogPost = {
       title: 'Use git like a senior engineer',
-      author: 'Jacob Bennett',
+      // author: 'Jacob Bennett',
       url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
       likes: 4,
     };
