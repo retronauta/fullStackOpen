@@ -58,6 +58,16 @@ describe('addition of a new blog', () => {
     expect(totalBlogs.body).toHaveLength(helper.initialBlogs.length + 1);
   });
 
+  test('verifies if token is provided', async () => {
+    const newBlogPost = {
+      title: 'Use git like a senior engineer',
+      url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
+      likes: 4,
+    };
+
+    await api.post('/api/blogs').send(newBlogPost).expect(401);
+  });
+
   test('verifies if like property is missing from the request', async () => {
     const newBlogPost = {
       title: 'Use git like a senior engineer',
@@ -80,7 +90,11 @@ describe('addition of a new blog', () => {
       likes: 2,
     };
 
-    await api.post('/api/blogs').send(newBlogPost).expect(400);
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400);
   });
 });
 
