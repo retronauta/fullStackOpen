@@ -4,6 +4,7 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
 const api = supertest(app);
+let token;
 
 beforeEach(async () => {
   await Blog.deleteMany({});
@@ -11,9 +12,13 @@ beforeEach(async () => {
     let blogObject = new Blog(blog);
     await blogObject.save();
   }
+
+  const credentials = { username: 'admin', password: process.env.password };
+  const userLogin = await api.post('/api/login').send(credentials);
+  token = userLogin.body.token;
 });
 
-describe('blog tests', () => {
+describe('when there is initially some notes saved', () => {
   test('notes are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -32,11 +37,12 @@ describe('blog tests', () => {
 
     expect(id).toBeDefined();
   });
+});
 
-  test.only('verifies that http post request creates a new blog post', async () => {
+describe('addition of a new blog', () => {
+  test('verifies that http post request creates a new blog post', async () => {
     const newBlogPost = {
       title: 'Use git like a senior engineer',
-      // author: 'Jacob Bennett',
       url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
       likes: 4,
     };
@@ -44,6 +50,7 @@ describe('blog tests', () => {
     await api
       .post('/api/blogs')
       .send(newBlogPost)
+      .set('Authorization', `Bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
@@ -54,34 +61,38 @@ describe('blog tests', () => {
   test('verifies if like property is missing from the request', async () => {
     const newBlogPost = {
       title: 'Use git like a senior engineer',
-      author: 'Jacob Bennett',
       url: 'https://medium.com/gitconnected/use-git-like-a-senior-engineer-ef6d741c898e',
     };
 
     await api
       .post('/api/blogs')
       .send(newBlogPost)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
-
-    // expect(newBlogPost).toHaveProperty('likes');
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400)
+      .then(res => {
+        expect(res.body.error).toContain('Path `likes` is required');
+      });
   });
 
   test('verifies missing properties', async () => {
     const newBlogPost = {
       title: 'Use git like a senior engineer',
-      author: 'Jacob Bennett',
       likes: 2,
     };
 
     await api.post('/api/blogs').send(newBlogPost).expect(400);
   });
+});
 
+describe('deletion of a blog', () => {
   test('check deletion of a note', async () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
 
     const blogsAtTheEnd = await helper.blogsInDb();
 
@@ -91,7 +102,9 @@ describe('blog tests', () => {
 
     expect(titles).not.toContain(blogToDelete.title);
   });
+});
 
+describe('updating of a note', () => {
   test('check updated likes', async () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToUpdate = blogsAtStart[0];

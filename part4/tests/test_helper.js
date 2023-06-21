@@ -7,6 +7,7 @@ const initialBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
+    user: '6493697a5474524f34a339d6',
   },
   {
     title: 'Go To Statement Considered Harmful',
