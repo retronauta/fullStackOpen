@@ -29,7 +29,7 @@ blogRouter.post('/', async (req, res, next) => {
   // const randomUser = filteredUsers[randomNumber];
   const user = req.user;
 
-  const { title, url, likes } = req.body;
+  const { title, url, likes, author } = req.body;
 
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token invalid' });
@@ -37,9 +37,9 @@ blogRouter.post('/', async (req, res, next) => {
 
   const blog = new Blog({
     title,
-    author: user.name,
+    author: author || user.name,
     url,
-    likes: likes,
+    likes: likes || 0,
     user: user.id,
   });
 
