@@ -1,4 +1,6 @@
 import React from 'react';
+import Notification from './Notification';
+// import './css'
 
 const Login = ({
   handleLogin,
@@ -6,10 +8,13 @@ const Login = ({
   setPassword,
   username,
   password,
+  errorMessage,
+  style,
 }) => {
   return (
     <div>
       <h1>Log in to application</h1>
+      <Notification message={errorMessage} style={style} />
       <form onSubmit={handleLogin}>
         <label>username: </label>
         <input
@@ -26,7 +31,7 @@ const Login = ({
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
-        <br/>
+        <br />
         <button type="submit">login</button>
       </form>
     </div>

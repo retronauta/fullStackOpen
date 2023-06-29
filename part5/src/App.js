@@ -4,6 +4,8 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import Login from './components/Login';
 import NewPostForm from './components/NewPostForm';
+import Notification from './components/Notification';
+import './index.css';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +15,7 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [author, setAuthor] = useState('');
+  const [message, setMessage] = useState(null);
 
   //* GET all blog post from the database
   useEffect(() => {
@@ -49,7 +52,10 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (exception) {
-      alert('wrong credentials');
+      setMessage('wrong username or password');
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
       setUsername('');
       setPassword('');
     }
@@ -59,34 +65,61 @@ const App = () => {
     event.preventDefault();
     try {
       const blogObject = { title: title, url: url, author: author };
-      await blogService.create(blogObject);
-
+      const response = await blogService.create(blogObject);
+      setMessage(`a new blog ${response.title} added`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
       setTitle('');
       setUrl('');
       setAuthor('');
     } catch (exception) {
-      console.log(exception);
       setTitle('');
       setUrl('');
       setAuthor('');
     }
   };
 
+  const styleError = {
+    color: 'red',
+    background: 'lightgrey',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px',
+  };
+
+  const successStyle = {
+    color: 'green',
+    background: 'lightgreen',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px',
+  };
+
   return (
     <>
       {!user && (
-        <Login
-          password={password}
-          username={username}
-          setPassword={setPassword}
-          setUsername={setUsername}
-          handleLogin={handleLogin}
-        />
+        <>
+          <Login
+            password={password}
+            username={username}
+            setPassword={setPassword}
+            setUsername={setUsername}
+            handleLogin={handleLogin}
+            errorMessage={message}
+            style={styleError}
+          />
+        </>
       )}
 
       {user && (
         <div>
           <h2>blogs</h2>
+          <Notification message={message} style={successStyle} />
           <p>
             {user.name} logged in
             <button onClick={() => window.localStorage.clear()}>logout</button>
