@@ -85,7 +85,7 @@ const App = () => {
             <button onClick={() => window.localStorage.clear()}>logout</button>
           </p>
 
-          <Togglable buttonLabel="new note">
+          <Togglable buttonLabel="create new blog">
             <NewPostForm createPost={createPost} />
           </Togglable>
 
