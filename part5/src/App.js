@@ -6,15 +6,11 @@ import Login from './components/Login';
 import NewPostForm from './components/NewPostForm';
 import Notification from './components/Notification';
 import './index.css';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');
-  const [author, setAuthor] = useState('');
   const [message, setMessage] = useState(null);
 
   //* GET all blog post from the database
@@ -40,29 +36,26 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async event => {
-    event.preventDefault();
+  const successStyle = {
+    color: 'green',
+    background: 'lightgreen',
+  };
+
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
-
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-
-      setUsername('');
-      setPassword('');
     } catch (exception) {
       setMessage('wrong username or password');
       setTimeout(() => {
         setMessage(null);
       }, 3000);
-      setUsername('');
-      setPassword('');
     }
   };
 
-  const createPost = async event => {
-    event.preventDefault();
+  const createPost = async (title, author, url) => {
     try {
       const blogObject = { title: title, url: url, author: author };
       const response = await blogService.create(blogObject);
@@ -70,49 +63,16 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       }, 3000);
-      setTitle('');
-      setUrl('');
-      setAuthor('');
     } catch (exception) {
-      setTitle('');
-      setUrl('');
-      setAuthor('');
+      console.log(exception);
     }
-  };
-
-  const styleError = {
-    color: 'red',
-    background: 'lightgrey',
-    fontSize: '20px',
-    borderStyle: 'solid',
-    borderRadius: '5px',
-    padding: '10px',
-    marginBottom: '10px',
-  };
-
-  const successStyle = {
-    color: 'green',
-    background: 'lightgreen',
-    fontSize: '20px',
-    borderStyle: 'solid',
-    borderRadius: '5px',
-    padding: '10px',
-    marginBottom: '10px',
   };
 
   return (
     <>
       {!user && (
         <>
-          <Login
-            password={password}
-            username={username}
-            setPassword={setPassword}
-            setUsername={setUsername}
-            handleLogin={handleLogin}
-            errorMessage={message}
-            style={styleError}
-          />
+          <Login loginUser={handleLogin} errorMessage={message} />
         </>
       )}
 
@@ -125,17 +85,9 @@ const App = () => {
             <button onClick={() => window.localStorage.clear()}>logout</button>
           </p>
 
-          <h2>Create new</h2>
-
-          <NewPostForm
-            title={title}
-            url={url}
-            createPost={createPost}
-            setTitle={setTitle}
-            setUrl={setUrl}
-            author={author}
-            setAuthor={setAuthor}
-          />
+          <Togglable buttonLabel="new note">
+            <NewPostForm createPost={createPost} />
+          </Togglable>
 
           {blogs.map(blog => (
             <Blog blog={blog} key={blog.id} />
