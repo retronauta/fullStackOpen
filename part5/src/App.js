@@ -12,19 +12,23 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
+  const [newChange, setNewChange] = useState(false);
 
   //* GET all blog post from the database
   useEffect(() => {
     const fetchData = async () => {
       try {
         const blogs = await blogService.getAll();
-        setBlogs(blogs);
+        const sortedBlogs = blogs.sort((a, b) => {
+          return b.likes - a.likes;
+        });
+        setBlogs(sortedBlogs);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [blogs]);
+  }, [newChange]);
 
   //* Verifica si ya existe un token almacenado en localstorage
   useEffect(() => {
@@ -39,6 +43,10 @@ const App = () => {
   const successStyle = {
     color: 'green',
     background: 'lightgreen',
+  };
+
+  const toggleNewPost = () => {
+    setNewChange(!newChange);
   };
 
   const handleLogin = async (username, password) => {
@@ -60,6 +68,8 @@ const App = () => {
       const blogObject = { title: title, url: url, author: author };
       const response = await blogService.create(blogObject);
       setMessage(`a new blog ${response.title} added`);
+      toggleNewPost();
+
       setTimeout(() => {
         setMessage(null);
       }, 3000);
@@ -79,6 +89,7 @@ const App = () => {
         likes: updatedBlog.likes,
       };
       await blogService.update(objectBlog, id);
+      toggleNewPost();
     } catch (exception) {
       console.log(exception);
     }
