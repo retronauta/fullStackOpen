@@ -31,5 +31,15 @@ const update = async (updatedObject, id) => {
   return response.data;
 };
 
+const remove = async id => {
+  const urlId = `${baseUrl}/${id}`;
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.delete(urlId, config);
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, update };
+export default { getAll, create, setToken, update, remove };

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, updateLikes, loggedUser, removePost }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,6 +14,12 @@ const Blog = ({ blog, updateLikes }) => {
   const showWhenVisible = { display: visible ? '' : 'none' };
   const name = blog.user.name;
   const idUser = blog.user.id;
+  const loggedUserName = loggedUser.name;
+
+  const buttonStyle = {
+    background: 'red',
+    color: 'white',
+  };
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -33,6 +39,11 @@ const Blog = ({ blog, updateLikes }) => {
     updateLikes(updatedBlog);
   };
 
+  const remove = () => {
+    const confirm = window.confirm(`Remove blog: ${blog.title}`);
+    if (confirm) removePost(blog.id);
+  };
+
   return (
     <div style={blogStyle}>
       <div style={hiddenWhenVisible}>
@@ -49,6 +60,12 @@ const Blog = ({ blog, updateLikes }) => {
         {blog.likes} <button onClick={update}>like</button>
         <br />
         {name}
+        <br />
+        {name === loggedUserName && (
+          <button style={buttonStyle} onClick={remove}>
+            remove
+          </button>
+        )}
       </div>
     </div>
   );

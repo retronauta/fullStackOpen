@@ -95,6 +95,15 @@ const App = () => {
     }
   };
 
+  const removePost = async id => {
+    try {
+      await blogService.remove(id);
+      toggleNewPost();
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
+
   return (
     <>
       {!user && (
@@ -117,7 +126,13 @@ const App = () => {
           </Togglable>
 
           {blogs.map(blog => (
-            <Blog blog={blog} key={blog.id} updateLikes={updateBlog} />
+            <Blog
+              blog={blog}
+              key={blog.id}
+              updateLikes={updateBlog}
+              loggedUser={user}
+              removePost={removePost}
+            />
           ))}
         </div>
       )}
