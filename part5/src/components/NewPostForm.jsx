@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const NewPostForm = ({ createPost }) => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const addPost = event => {
-    event.preventDefault();
-    createPost(title, author, url);
-    setTitle('');
-    setAuthor('');
-    setUrl('');
-  };
+    event.preventDefault()
+    createPost(title, author, url)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
 
   return (
     <>
@@ -44,7 +44,7 @@ const NewPostForm = ({ createPost }) => {
         <button type="submit">create</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default NewPostForm;
+export default NewPostForm

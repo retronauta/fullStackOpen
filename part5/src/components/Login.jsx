@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import Notification from './Notification';
+import React, { useState } from 'react'
+import Notification from './Notification'
+import PropTypes from 'prop-types'
 
 const Login = ({ loginUser, errorMessage }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const styleError = {
     color: 'red',
     background: 'lightgrey',
-  };
+  }
 
   const login = event => {
-    event.preventDefault();
-    loginUser(username, password);
-    setUsername('');
-    setPassword('');
-  };
+    event.preventDefault()
+    loginUser(username, password)
+    setUsername('')
+    setPassword('')
+  }
 
   return (
     <div>
@@ -43,7 +44,11 @@ const Login = ({ loginUser, errorMessage }) => {
         <button type="submit">login</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+}
+
+export default Login
