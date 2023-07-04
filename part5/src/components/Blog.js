@@ -46,12 +46,12 @@ const Blog = ({ blog, updateLikes, loggedUser, removePost }) => {
 
   return (
     <div style={blogStyle}>
-      <div style={hiddenWhenVisible}>
+      <div style={hiddenWhenVisible} className="firstRender">
         {blog.title} | {blog.author}{' '}
         <button onClick={toggleVisibility}>view</button>
       </div>
 
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='completePost'>
         {blog.title} | {blog.author}{' '}
         <button onClick={toggleVisibility}>hide</button>
         <br />
