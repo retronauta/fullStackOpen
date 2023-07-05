@@ -23,6 +23,7 @@ const NewPostForm = ({ createPost }) => {
           value={title}
           name="Title"
           onChange={({ target }) => setTitle(target.value)}
+          id="title"
         />
         <br />
         <label>author: </label>
@@ -31,6 +32,7 @@ const NewPostForm = ({ createPost }) => {
           value={author}
           name="Author"
           onChange={({ target }) => setAuthor(target.value)}
+          id="author"
         />
         <br />
         <label>url: </label>
@@ -39,6 +41,7 @@ const NewPostForm = ({ createPost }) => {
           value={url}
           name="Url"
           onChange={({ target }) => setUrl(target.value)}
+          id="url"
         />
         <br />
         <button type="submit">create</button>
