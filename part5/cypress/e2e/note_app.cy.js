@@ -50,5 +50,22 @@ describe('Blog app', function () {
 
       cy.contains('test blog post')
     })
+
+    describe('blog post exist', function () {
+      beforeEach(function () {
+        cy.createPost({
+          title: 'test post',
+          author: 'me',
+          url: 'www.freecodecamp.com',
+        })
+      })
+
+      it.only('Users can likes a blog', function () {
+        cy.contains('view').click()
+        cy.get('.likes').should('contain', '0')
+        cy.contains('like').click()
+        cy.get('.likes').should('contain', '1')
+      })
+    })
   })
 })
