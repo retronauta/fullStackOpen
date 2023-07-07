@@ -24,6 +24,13 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('resetAndSign', () => {
+  cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+  const user = { name: 'Limbert', username: 'lino', password: 'qwerty' }
+  cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+  cy.visit('')
+})
+
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', 'http://localhost:3003/api/login', {
     username,

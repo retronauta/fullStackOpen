@@ -1,9 +1,11 @@
 describe('Blog app', function () {
   beforeEach(function () {
-    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-    const user = { name: 'Limbert', username: 'lino', password: 'qwerty' }
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
-    cy.visit('')
+    // cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+    // const user = { name: 'Limbert', username: 'lino', password: 'qwerty' }
+    // cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+    // cy.visit('')
+
+    cy.resetAndSign()
   })
 
   it('login form is show', function () {
@@ -27,6 +29,26 @@ describe('Blog app', function () {
 
       cy.get('.notification').should('contain', 'wrong username or password')
       cy.contains('Limbert logged in').should('not.exist')
+    })
+  })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      // cy.get('.usernameField').type('lino')
+      // cy.get('.passwordField').type('qwerty')
+      // cy.contains('login').click()
+
+      cy.login({ username: 'lino', password: 'qwerty' })
+    })
+
+    it('A blog can be created', function () {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('test blog post')
+      cy.get('#author').type('me')
+      cy.get('#url').type('http://www.freecodecamp.com')
+      cy.get('#create-button').click()
+
+      cy.contains('test blog post')
     })
   })
 })
