@@ -24,11 +24,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('resetAndSign', () => {
+Cypress.Commands.add('resetDb', () => {
   cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-  const user = { name: 'Limbert', username: 'lino', password: 'qwerty' }
-  cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
-  cy.visit('')
+})
+
+Cypress.Commands.add('signUser', ({ name, username, password }) => {
+  cy.request('POST', `${Cypress.env('BACKEND')}/users`, {
+    name,
+    username,
+    password,
+  })
 })
 
 Cypress.Commands.add('login', ({ username, password }) => {
@@ -46,10 +51,6 @@ Cypress.Commands.add('createPost', ({ title, author, url }) => {
     url: `${Cypress.env('BACKEND')}/blogs`,
     method: 'POST',
     body: { title, author, url },
-    // headers: {
-    //   Authorization: `Bearer ${
-    //     JSON.parse(localStorage.getItem('loggedUser')).token
-    //   }`,
     headers: {
       Authorization: `Bearer ${
         JSON.parse(localStorage.getItem('loggedUser')).token

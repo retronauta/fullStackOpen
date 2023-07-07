@@ -5,7 +5,10 @@ describe('Blog app', function () {
     // cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
     // cy.visit('')
 
-    cy.resetAndSign()
+    cy.resetDb()
+
+    cy.signUser({ name: 'admin', username: 'admin', password: 'qwerty' })
+    cy.signUser({ name: 'Limbert', username: 'lino', password: 'qwerty' })
   })
 
   it('login form is show', function () {
@@ -67,11 +70,20 @@ describe('Blog app', function () {
         cy.get('.likes').should('contain', '1')
       })
 
-      it.only('user who created a blog can delete it', function(){
+      it('user who created a blog can delete it', function () {
         cy.contains('view').click()
         cy.contains('test post')
         cy.contains('remove').click()
         cy.contains('test post').should('not.exist')
+      })
+
+      it.only('only the creator can see the remove button of a blog', function () {
+        cy.contains('view').click()
+        cy.contains('remove')
+        cy.contains('logout').click()
+        cy.login({ username: 'admin', password: 'qwerty' })
+        cy.contains('view').click()
+        cy.contains('remove').should('not.exist')
       })
     })
   })
