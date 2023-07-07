@@ -7,7 +7,7 @@ const Login = ({ loginUser, errorMessage }) => {
   const [password, setPassword] = useState('')
 
   const styleError = {
-    color: 'red',
+    color: 'rgb(255, 0, 0)',
     background: 'lightgrey',
   }
 
@@ -26,6 +26,7 @@ const Login = ({ loginUser, errorMessage }) => {
         <label>username: </label>
         <input
           type="text"
+          className="usernameField"
           value={username}
           name="Username"
           // onChange={event => setUsername(event.target.value)}
@@ -35,6 +36,7 @@ const Login = ({ loginUser, errorMessage }) => {
         <label>password:</label>
         <input
           type="password"
+          className="passwordField"
           value={password}
           name="Password"
           // onChange={event => setPassword(event.target.value)}

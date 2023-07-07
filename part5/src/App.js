@@ -59,7 +59,7 @@ const App = () => {
       setMessage('wrong username or password')
       setTimeout(() => {
         setMessage(null)
-      }, 3000)
+      }, 5000)
     }
   }
 
@@ -72,7 +72,7 @@ const App = () => {
 
       setTimeout(() => {
         setMessage(null)
-      }, 3000)
+      }, 5000)
     } catch (exception) {
       console.log(exception)
     }
