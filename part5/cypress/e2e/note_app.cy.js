@@ -77,13 +77,59 @@ describe('Blog app', function () {
         cy.contains('test post').should('not.exist')
       })
 
-      it.only('only the creator can see the remove button of a blog', function () {
+      it('only the creator can see the remove button of a blog', function () {
         cy.contains('view').click()
         cy.contains('remove')
         cy.contains('logout').click()
         cy.login({ username: 'admin', password: 'qwerty' })
         cy.contains('view').click()
         cy.contains('remove').should('not.exist')
+      })
+    })
+
+    describe('several post exists', function () {
+      beforeEach(function () {
+        cy.createPost({
+          title: 'first post',
+          author: 'me',
+          url: 'www.freecodecamp.com',
+        })
+
+        cy.createPost({
+          title: 'second post',
+          author: 'me',
+          url: 'www.freecodecamp.com',
+        })
+
+        cy.createPost({
+          title: 'third post',
+          author: 'me',
+          url: 'www.freecodecamp.com',
+        })
+      })
+
+      it.only('blogs are ordered according to likes', async function () {
+        cy.get('.blogs').eq(0).contains('view').click()
+        cy.get('.blogs').eq(1).contains('view').click()
+        cy.get('.blogs').eq(2).contains('view').click()
+
+        cy.get('.completePost').contains('first post').contains('like').click()
+        cy.get('.completePost').contains('first post').should('contain', 1)
+        cy.get('.completePost').contains('first post').contains('like').click()
+        cy.get('.completePost').contains('first post').should('contain', 2)
+
+        cy.get('.completePost').contains('third post').contains('like').click()
+        cy.get('.completePost').contains('third post').should('contain', 1)
+        cy.get('.completePost').contains('third post').contains('like').click()
+        cy.get('.completePost').contains('third post').should('contain', 2)
+        cy.get('.completePost').contains('third post').contains('like').click()
+        cy.get('.completePost').contains('third post').should('contain', 3)
+        cy.get('.completePost').contains('third post').contains('like').click()
+        cy.get('.completePost').contains('third post').should('contain', 4)
+
+        cy.get('.blogs').eq(0).contains('third post')
+        cy.get('.blogs').eq(1).contains('first post')
+        cy.get('.blogs').eq(2).contains('second post')
       })
     })
   })
