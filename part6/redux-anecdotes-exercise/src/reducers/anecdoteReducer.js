@@ -1,3 +1,5 @@
+import deepFreeze from 'deep-freeze'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -20,6 +22,7 @@ const asObject = anecdote => {
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
+  deepFreeze(state)
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
@@ -28,12 +31,16 @@ const reducer = (state = initialState, action) => {
       const noteToUpdate = state.find(n => n.id === id)
       // console.log({ noteToUpdate, id })
       const upvoteAnecdote = { ...noteToUpdate, votes: noteToUpdate.votes + 1 }
-      return state.map(anecdote =>
+      const sortedState = [...state].sort((a, b) => {
+        return b.votes - a.votes
+      })
+      return sortedState.map(anecdote =>
         anecdote.id === id ? upvoteAnecdote : anecdote
       )
 
     case 'NEW_ANECDOTE':
       return [...state, action.payload]
+    // return state.concat(action.payload)
 
     default:
       return state
