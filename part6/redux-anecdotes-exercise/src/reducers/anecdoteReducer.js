@@ -1,4 +1,4 @@
-import deepFreeze from 'deep-freeze'
+import { createSlice } from '@reduxjs/toolkit'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -21,46 +21,30 @@ const asObject = anecdote => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
-  deepFreeze(state)
-  // console.log('state now: ', state)
-  // console.log('action', action)
-  switch (action.type) {
-    case 'UPVOTE':
-      const id = action.payload.id
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+
+  reducers: {
+    upvoteAnecdote(state, action) {
+      const id = action.payload
       const noteToUpdate = state.find(n => n.id === id)
-      // console.log({ noteToUpdate, id })
-      const upvoteAnecdote = { ...noteToUpdate, votes: noteToUpdate.votes + 1 }
-      const sortedState = [...state].sort((a, b) => {
-        return b.votes - a.votes
-      })
-      return sortedState.map(anecdote =>
-        anecdote.id === id ? upvoteAnecdote : anecdote
+      const upvotedAnecdote = { ...noteToUpdate, votes: noteToUpdate.votes + 1 }
+
+      const newState = state.map(anecdote =>
+        anecdote.id === id ? upvotedAnecdote : anecdote
       )
 
-    case 'NEW_ANECDOTE':
-      return [...state, action.payload]
-    // return state.concat(action.payload)
+      return newState.sort((a, b) => {
+        return b.votes - a.votes
+      })
+    },
 
-    default:
-      return state
-  }
+    newAnecdote(state, action) {
+      return [...state, { content: action.payload, id: getId(), votes: 0 }]
+    },
+  },
+})
 
-  // return state
-}
-
-export const upvoteNote = id => {
-  return {
-    type: 'UPVOTE',
-    payload: { id },
-  }
-}
-
-export const newAnecdote = content => {
-  return {
-    type: 'NEW_ANECDOTE',
-    payload: { content, id: getId(), votes: 0 },
-  }
-}
-
-export default anecdoteReducer
+export const { upvoteAnecdote, newAnecdote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
