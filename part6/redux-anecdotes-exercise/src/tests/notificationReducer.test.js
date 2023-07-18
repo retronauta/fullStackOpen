@@ -2,10 +2,10 @@ import deepFreeze from 'deep-freeze'
 import notificationReducer from '../reducers/notificationReducer'
 
 describe('notification reducer', () => {
-  test('create new anecdote with action notification/displayNotification', () => {
+  test('set new notification message with action notification/setNotification', () => {
     const state = ''
     const action = {
-      type: 'notification/displayNotification',
+      type: 'notification/setNotification',
       payload: 'new notification',
     }
 
@@ -13,5 +13,23 @@ describe('notification reducer', () => {
 
     const newState = notificationReducer(state, action)
     expect(newState).toBe('new notification')
+  })
+
+  test('remove notification message with action notification/removeNotification', () => {
+    const state = notificationReducer('', {
+      type: 'notification/setNotification',
+      payload: 'new message',
+    })
+
+    const action = {
+      type: 'notification/removeNotification',
+      payload: '',
+    }
+
+    deepFreeze(state)
+
+    const newState = notificationReducer(state, action)
+
+    expect(newState).toBe('')
   })
 })
