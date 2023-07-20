@@ -4,8 +4,6 @@ import {
   setNotification,
   removeNotification,
 } from '../reducers/notificationReducer'
-import { useEffect } from 'react'
-
 
 const AnecdoteList = () => {
   // console.log(useSelector(state => state))

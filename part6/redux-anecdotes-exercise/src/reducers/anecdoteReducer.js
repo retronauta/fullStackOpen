@@ -19,8 +19,8 @@ const anecdoteSlice = createSlice({
       })
     },
 
-    newAnecdote(state, action) {
-      return [...state, { content: action.payload, votes: 0 }]
+    createAnecdote(state, action) {
+      return [...state, action.payload]
     },
 
     setAnecdotes(state, action) {
@@ -29,5 +29,6 @@ const anecdoteSlice = createSlice({
   },
 })
 
-export const { upvoteAnecdote, newAnecdote, setAnecdotes } = anecdoteSlice.actions
+export const { upvoteAnecdote, createAnecdote, setAnecdotes } =
+  anecdoteSlice.actions
 export default anecdoteSlice.reducer
