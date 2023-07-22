@@ -18,13 +18,6 @@ const AnecdoteForm = () => {
     // console.log('new anecdote')
   }
 
-  // const newAnecdoteMutationB = useMutation(createAnecdote, {
-  //   onSuccess: newNote => {
-  //     const notes = queryClient.getQueryData('anecdotes')
-  //     queryClient.setQueryData('anecdotes', notes.concat(newNote))
-  //   },
-  // })
-
   return (
     <div>
       <h3>create new</h3>
