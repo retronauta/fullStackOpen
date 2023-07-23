@@ -21,11 +21,21 @@ const AnecdoteForm = () => {
     if (content.length >= 5) {
       dispatch({ type: 'MESSAGE', payload: `anecdote ${content}` })
     }
+    // useNotificationDispatch({type: 'MESSAGE'})
+    newAnecdoteMutation.mutate(
+      { content, votes: 0 },
+      {
+        onError(err) {
+          dispatch({
+            type: 'MESSAGE',
+            payload: 'too short anecdote, must have length 5 or more',
+          })
+        },
+      }
+    )
     setTimeout(() => {
       dispatch({ type: 'MESSAGE', payload: '' })
     }, 5000)
-    // useNotificationDispatch({type: 'MESSAGE'})
-    newAnecdoteMutation.mutate({ content, votes: 0 })
     // console.log('new anecdote')
   }
 
