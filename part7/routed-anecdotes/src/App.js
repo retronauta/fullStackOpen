@@ -50,12 +50,24 @@ const App = () => {
     ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
     : null
 
+  if (notification) {
+    setTimeout(() => {
+      setNotification('')
+    }, 5000)
+  }
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification && <div>{`a new anecdote ${notification}`}</div>}
       <Routes>
-        <Route path="/new" element={<CreateNew />} />
+        <Route
+          path="/new"
+          element={
+            <CreateNew addNew={addNew} setNotification={setNotification} />
+          }
+        />
         <Route path="/about" element={<About />} />
         <Route
           path="/anecdotes/:id"
@@ -63,9 +75,6 @@ const App = () => {
         />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
       </Routes>
-      {/* <AnecdoteList anecdotes={anecdotes} /> */}
-      {/* <About /> */}
-      {/* <CreateNew addNew={addNew} /> */}
       <Footer />
     </div>
   )
