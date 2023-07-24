@@ -1,8 +1,5 @@
 import React from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
-import AnecdoteList from './AnecdoteList'
-import CreateNew from './CreateNew'
-import About from './About'
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -19,11 +16,6 @@ const Menu = () => {
       <Link to="/about" style={padding}>
         about
       </Link>
-      <Routes>
-        <Route path="/" element={<AnecdoteList />} />
-        <Route path="/new" element={<CreateNew />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
     </div>
   )
 }
