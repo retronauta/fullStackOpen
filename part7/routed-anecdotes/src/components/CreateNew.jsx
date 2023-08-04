@@ -4,9 +4,9 @@ import { useField } from '../hooks'
 const CreateNew = props => {
   const navigate = useNavigate()
 
-  const content = useField('text')
-  const info = useField('text')
-  const author = useField('text')
+  const { reset: resetContent, ...content } = useField('text')
+  const { reset: resetAuthor, ...author } = useField('text')
+  const { reset: resetInfo, ...info } = useField('text')
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -21,9 +21,9 @@ const CreateNew = props => {
   }
 
   const resetForm = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    resetContent()
+    resetInfo()
+    resetAuthor()
   }
 
   return (
@@ -33,6 +33,7 @@ const CreateNew = props => {
         <div>
           content
           <input {...content} />
+          {/* <input /> */}
         </div>
         <div>
           author
