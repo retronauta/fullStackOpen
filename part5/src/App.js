@@ -35,6 +35,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log(user)
       blogService.setToken(user.token)
       setUser(user)
     }
@@ -52,6 +53,7 @@ const App = () => {
   const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({ username, password })
+      console.log(user)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
