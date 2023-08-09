@@ -16,7 +16,12 @@ import Togglable from './components/Togglable'
 import Blog from './components/Blog'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMessage } from './reducers/notificationReducer'
-import { createBlogPost, initializeBlogs } from './reducers/blogsReducer'
+import {
+  createBlogPost,
+  deleteBlog,
+  initializeBlogs,
+  updateLikes,
+} from './reducers/blogsReducer'
 
 const App = () => {
   // const [blogs, setBlogs] = useState([])
@@ -92,10 +97,9 @@ const App = () => {
   }
 
   const like = async blog => {
-    // const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-    // const updatedBlog = await blogService.update(blogToUpdate)
+    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
+    dispatch(updateLikes(blogToUpdate))
     notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-    // setBlogs(blogs.map(b => (b.id === blog.id ? updatedBlog : b)))
   }
 
   const remove = async blog => {
@@ -103,9 +107,8 @@ const App = () => {
       `Sure you want to remove '${blog.title}' by ${blog.author}`
     )
     if (ok) {
-      await blogService.remove(blog.id)
       notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
-      // setBlogs(blogs.filter(b => b.id !== blog.id))
+      dispatch(deleteBlog(blog))
     }
   }
 
