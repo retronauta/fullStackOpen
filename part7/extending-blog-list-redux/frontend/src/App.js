@@ -1,10 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
-
-//* === SERVICIO ===
-//* Manejo del login de usarios
-import loginService from './services/login'
-//* Manejo del local storage
-import storageService from './services/storage'
+import { useEffect, useRef } from 'react'
 
 //* === COMPONENTES ===
 import LoginForm from './components/Login'
@@ -20,17 +14,9 @@ import {
   initializeBlogs,
   updateLikes,
 } from './reducers/blogsReducer'
-import { fetchUser, loginUser } from './reducers/userReducer'
+import { fetchUser, loginUser, logoutUser } from './reducers/userReducer'
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState('')
-
-  const user2 = useSelector(({ user }) => {
-    console.log('user cargado al loguearme', user)
-    return user
-  })
-
   const blogFormRef = useRef()
 
   const dispatch = useDispatch()
@@ -43,21 +29,15 @@ const App = () => {
     return blogs
   })
 
-  //* Fetch de los post
+  const user = useSelector(({ user }) => {
+    return user
+  })
+
+  //* Fetch de los post y carga user desde localStorage
   useEffect(() => {
+    dispatch(fetchUser())
     dispatch(initializeBlogs())
   }, [dispatch])
-
-  //* Carga el user desde localStorage
-  useEffect(() => {
-    //TODO dispatch user
-    // dispatch(fetchUser())
-    const user = storageService.loadUser()
-    const user2 = JSON.parse(window.localStorage.getItem('blogappUser2'))
-    console.log('User de localStorage de estados', user)
-    console.log('User de localStorage desde redux', user2)
-    setUser(user2)
-  }, [])
 
   //* Manejo de notificacion y su tipo
   const notifyWith = (message, type = 'info') => {
@@ -70,21 +50,9 @@ const App = () => {
 
   const login = async (username, password) => {
     try {
-      //TODO debo modificar esta logica para redux
       dispatch(loginUser({ username, password }))
-      // console.log(user2)
-      //* Se loguea en en la base de datos
-      //* Espero un objeto con mi usuario desde el backend
-      const user = await loginService.login({ username, password })
-      // console.log('User retornado del backend cuando me logueo:', user)
-      //* Seteo el estado de user
-      setUser(user2)
-      // Guardo en el localStorage el usuario
-      // dispatch(saveUser(user2))
-      storageService.saveUser(user)
       // Ejecuto la funcion para mostrar notificacion
       notifyWith('welcome!')
-      // console.log({ user, user2 })
     } catch (e) {
       notifyWith('wrong username or password', 'error')
     }
@@ -92,12 +60,8 @@ const App = () => {
 
   //* Deslogueo del usuario
   const logout = async () => {
-    // Seteo el usuario a null
-    //TODO debo manejar aqui el estado
-    setUser(null)
-    // Se remueve el usuario del localStorage
-    storageService.removeUser()
-    localStorage.removeItem('blogappUser2')
+    // reseteo el usuario a null
+    dispatch(logoutUser())
     // Notificacion de deslogueo
     notifyWith('logged out')
   }
@@ -135,7 +99,6 @@ const App = () => {
     )
   }
 
-  // console.log(user2)
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
