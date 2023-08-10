@@ -1,32 +1,22 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
+
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 //* === COMPONENTES ===
 import LoginForm from './components/Login'
-import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import Blog from './components/Blog'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMessage } from './reducers/notificationReducer'
-import {
-  createBlogPost,
-  deleteBlog,
-  initializeBlogs,
-  updateLikes,
-} from './reducers/blogsReducer'
+import { initializeBlogs } from './reducers/blogsReducer'
 import { fetchUser, loginUser, logoutUser } from './reducers/userReducer'
+import Users from './components/Users'
+import Blogs from './components/Blogs'
 
 const App = () => {
-  const blogFormRef = useRef()
-
   const dispatch = useDispatch()
 
   const notification = useSelector(({ notification }) => {
     return notification
-  })
-
-  const blogs = useSelector(({ blogs }) => {
-    return blogs
   })
 
   const user = useSelector(({ user }) => {
@@ -51,7 +41,6 @@ const App = () => {
   const login = async (username, password) => {
     try {
       dispatch(loginUser({ username, password }))
-      // Ejecuto la funcion para mostrar notificacion
       notifyWith('welcome!')
     } catch (e) {
       notifyWith('wrong username or password', 'error')
@@ -60,32 +49,8 @@ const App = () => {
 
   //* Deslogueo del usuario
   const logout = async () => {
-    // reseteo el usuario a null
     dispatch(logoutUser())
-    // Notificacion de deslogueo
     notifyWith('logged out')
-  }
-
-  const createBlog = async newBlog => {
-    dispatch(createBlogPost(newBlog))
-    notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`)
-    blogFormRef.current.toggleVisibility()
-  }
-
-  const like = async blog => {
-    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-    dispatch(updateLikes(blogToUpdate))
-    notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-  }
-
-  const remove = async blog => {
-    const ok = window.confirm(
-      `Sure you want to remove '${blog.title}' by ${blog.author}`
-    )
-    if (ok) {
-      notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
-      dispatch(deleteBlog(blog))
-    }
   }
 
   //* Si el usuario no esta presente se va a la ventana de logueo
@@ -99,31 +64,22 @@ const App = () => {
     )
   }
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes
-
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification info={notification} />
+    <Router>
       <div>
-        {user.name} logged in
-        <button onClick={logout}>logout</button>
+        <h2>blogs</h2>
+        <Notification info={notification} />
+        <div>
+          {user.name} logged in
+          <button onClick={logout}>logout</button>
+        </div>
+
+        <Routes>
+          <Route path="/" element={<Blogs />} />
+          <Route path="/users" element={<Users />} />
+        </Routes>
       </div>
-      <Togglable buttonLabel="new note" ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
-      <div>
-        {[...blogs].sort(byLikes).map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username === user.username}
-            remove={() => remove(blog)}
-          />
-        ))}
-      </div>
-    </div>
+    </Router>
   )
 }
 
