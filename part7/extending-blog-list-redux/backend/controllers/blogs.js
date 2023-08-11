@@ -35,8 +35,6 @@ router.post('/', userExtractor, async (request, response) => {
 
   createdBlog = await Blog.findById(createdBlog._id).populate('user')
 
-  console.log(createdBlog)
-
   response.status(201).json(createdBlog)
 })
 
