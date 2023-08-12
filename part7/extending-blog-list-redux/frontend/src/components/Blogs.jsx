@@ -9,20 +9,21 @@ import {
 import { useRef } from 'react'
 import { setMessage } from '../reducers/notificationReducer'
 import Blog from './Blog'
+import { Link } from 'react-router-dom'
 
-function Blogs() {
+function Blogs({ blogs }) {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
 
-  const blogs = useSelector(({ blogs }) => blogs)
+  const style = {
+    marginBottom: 2,
+    padding: 5,
+    borderStyle: 'solid',
+  }
+
+  // const blogs = useSelector(({ blogs }) => blogs)
 
   const user = useSelector(({ user }) => user)
-
-  const like = async blog => {
-    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-    dispatch(updateLikes(blogToUpdate))
-    notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-  }
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
@@ -55,13 +56,9 @@ function Blogs() {
       </Togglable>
       <div>
         {[...blogs].sort(byLikes).map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username === user.username}
-            remove={() => remove(blog)}
-          />
+          <div style={style} key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
       </div>
     </div>

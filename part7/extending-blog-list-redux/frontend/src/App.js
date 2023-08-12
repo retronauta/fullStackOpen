@@ -1,18 +1,23 @@
 import { useEffect } from 'react'
 
-import { Route, Routes, useMatch } from 'react-router-dom'
+import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 //* === COMPONENTES ===
 import LoginForm from './components/Login'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMessage } from './reducers/notificationReducer'
-import { initializeBlogs } from './reducers/blogsReducer'
+import {
+  deleteBlog,
+  initializeBlogs,
+  updateLikes,
+} from './reducers/blogsReducer'
 import { fetchUser, loginUser, logoutUser } from './reducers/userReducer'
 import Users from './components/Users'
 import Blogs from './components/Blogs'
 import User from './components/User'
 import { initializeUsers } from './reducers/usersReducer'
+import BlogView from './components/BlogView'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -36,6 +41,8 @@ const App = () => {
     return users
   })
 
+  const blogs = useSelector(({ blogs }) => blogs)
+
   //* Manejo de notificacion y su tipo
   const notifyWith = (message, type = 'info') => {
     dispatch(setMessage({ message, type }))
@@ -43,6 +50,26 @@ const App = () => {
     setTimeout(() => {
       dispatch(setMessage({ message: null }))
     }, 3000)
+  }
+
+  const navigate = useNavigate()
+
+  const like = async blog => {
+    // console.log(blog)
+    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
+    dispatch(updateLikes(blogToUpdate))
+    notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
+  }
+
+  const remove = async blog => {
+    const ok = window.confirm(
+      `Sure you want to remove '${blog.title}' by ${blog.author}`
+    )
+    if (ok) {
+      notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
+      dispatch(deleteBlog(blog))
+      navigate('/')
+    }
   }
 
   const login = async (username, password) => {
@@ -60,10 +87,15 @@ const App = () => {
     notifyWith('logged out')
   }
 
-  const match = useMatch('/users/:id')
+  const matchUser = useMatch('/users/:id')
+  const matchBlog = useMatch('/blogs/:id')
 
-  const userInfo = match
-    ? users.find(user => user.id === match.params.id)
+  const blogInfo = matchBlog
+    ? blogs.find(blog => blog.id === matchBlog.params.id)
+    : null
+
+  const userInfo = matchUser
+    ? users.find(user => user.id === matchUser.params.id)
     : null
 
   //* Si el usuario no esta presente se va a la ventana de logueo
@@ -87,9 +119,20 @@ const App = () => {
       </div>
 
       <Routes>
+        <Route
+          path="/blogs/:id"
+          element={
+            <BlogView
+              blog={blogInfo}
+              like={() => like(blogInfo)}
+              remove={() => remove(blogInfo)}
+              user={user}
+            />
+          }
+        />
         <Route path="/users/:id" element={<User userInfo={userInfo} />} />
         <Route path="/users" element={<Users users={users} />} />
-        <Route path="/" element={<Blogs />} />
+        <Route path="/" element={<Blogs blogs={blogs} />} />
       </Routes>
     </div>
   )
