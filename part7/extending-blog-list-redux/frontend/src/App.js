@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
+import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 //* === COMPONENTES ===
 import LoginForm from './components/Login'
@@ -18,6 +18,7 @@ import Blogs from './components/Blogs'
 import User from './components/User'
 import { initializeUsers } from './reducers/usersReducer'
 import BlogView from './components/BlogView'
+import { Button, Nav, Navbar } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -110,13 +111,26 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Blogs</h1>
+    <div className="container">
+      <Navbar>
+        <Nav className="me-auto">
+          <Nav.Link href="#" as="span">
+            <Link to="/">Blogs</Link>
+          </Nav.Link>
+          <Nav.Link href="#" as="span">
+            <Link to="/users">Users</Link>
+          </Nav.Link>
+        </Nav>
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+            {user.name} logged in
+            <Button onClick={logout}>Logout</Button>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
+
       <Notification info={notification} />
-      <div>
-        {user.name} logged in
-        <button onClick={logout}>logout</button>
-      </div>
+      <div></div>
 
       <Routes>
         <Route
