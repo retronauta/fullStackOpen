@@ -12,12 +12,13 @@ router.get('/', async (request, response) => {
 
 //*
 router.post('/', userExtractor, async (request, response) => {
-  const { title, author, url, likes } = request.body
+  const { title, author, url, likes, comments } = request.body
   const blog = new Blog({
     title,
     author,
     url,
     likes: likes ? likes : 0,
+    comments,
   })
 
   const user = request.user

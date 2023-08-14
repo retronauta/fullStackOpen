@@ -1,3 +1,5 @@
+import Comments from './Comments'
+
 function BlogView({ blog, like, user, remove }) {
   if (!blog) {
     return <em>No blog found</em>
@@ -16,6 +18,13 @@ function BlogView({ blog, like, user, remove }) {
       </div>
       <div>Added by {blog.user.name}</div>
       {canRemove && <button onClick={remove}>delete</button>}
+
+      <Comments />
+      <ul>
+        {blog.comments.map(({ comment }) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
