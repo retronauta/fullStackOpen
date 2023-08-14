@@ -19,12 +19,7 @@ function BlogView({ blog, like, user, remove }) {
       <div>Added by {blog.user.name}</div>
       {canRemove && <button onClick={remove}>delete</button>}
 
-      <Comments />
-      <ul>
-        {blog.comments.map(({ comment }) => (
-          <li key={comment}>{comment}</li>
-        ))}
-      </ul>
+      <Comments blog={blog} />
     </div>
   )
 }

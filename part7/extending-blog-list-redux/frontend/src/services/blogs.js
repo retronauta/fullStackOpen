@@ -31,9 +31,14 @@ const update = async object => {
   return request.data
 }
 
+const updateComments = async object => {
+  const request = await axios.put(`${baseUrl}/${object.id}/comments`, object)
+  return request.data
+}
+
 const remove = async id => {
   await axios.delete(`${baseUrl}/${id}`, { headers })
 }
 
 // eslint-disable-next-line
-export default { getAll, create, update, remove }
+export default { getAll, create, update, remove, updateComments }

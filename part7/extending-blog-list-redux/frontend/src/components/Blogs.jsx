@@ -10,14 +10,6 @@ function Blogs({ blogs }) {
   const dispatch = useDispatch()
   const blogFormRef = useRef()
 
-  const style = {
-    marginBottom: 2,
-    padding: 5,
-    borderStyle: 'solid',
-  }
-
-  // const blogs = useSelector(({ blogs }) => blogs)
-
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   const notifyWith = (message, type = 'info') => {
