@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addComment } from '../reducers/blogsReducer'
+import { Button } from 'react-bootstrap'
 
 function Comments({ blog }) {
   const [comment, setComment] = useState('')
@@ -28,7 +29,10 @@ function Comments({ blog }) {
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         />
-        <button type="submit">Add comment</button>
+        {'  '}
+        <Button variant="primary" type="submit">
+          Add comment
+        </Button>
       </form>
       <br />
       <ul>

@@ -1,5 +1,4 @@
 const Notification = ({ info }) => {
-  // console.log({ notiComponent: props })
   if (!info.message) {
     return
   }
@@ -12,6 +11,7 @@ const Notification = ({ info }) => {
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    marginTop: 50,
   }
 
   return <div style={style}>{info.message}</div>

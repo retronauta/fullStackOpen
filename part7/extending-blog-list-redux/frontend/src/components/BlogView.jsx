@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap'
 import Comments from './Comments'
 
 function BlogView({ blog, like, user, remove }) {
@@ -14,10 +15,18 @@ function BlogView({ blog, like, user, remove }) {
         {blog.url}
       </a>
       <div>
-        {blog.likes} <button onClick={like}>like</button>{' '}
+        {blog.likes}
+        {'  '}
+        <Button variant="primary" onClick={like}>
+          Like
+        </Button>
       </div>
       <div>Added by {blog.user.name}</div>
-      {canRemove && <button onClick={remove}>delete</button>}
+      {canRemove && (
+        <Button variant="danger" onClick={remove}>
+          Remove
+        </Button>
+      )}
 
       <Comments blog={blog} />
     </div>

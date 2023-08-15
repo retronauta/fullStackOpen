@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import './app.css'
 
 import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
@@ -18,7 +19,7 @@ import Blogs from './components/Blogs'
 import User from './components/User'
 import { initializeUsers } from './reducers/usersReducer'
 import BlogView from './components/BlogView'
-import { Button, Nav, Navbar } from 'react-bootstrap'
+import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -102,16 +103,22 @@ const App = () => {
   //* Si el usuario no esta presente se va a la ventana de logueo
   if (!user) {
     return (
-      <div>
-        <h2>log in to application</h2>
+      <Container>
         <Notification info={notification} />
         <LoginForm login={login} />
-      </div>
+      </Container>
     )
   }
 
+  const style = {
+    paddingTop: '20px',
+    paddingLeft: '100px',
+    paddingRight: '100px',
+  }
+
   return (
-    <div className="container">
+    // <div className="container">
+    <Container fluid="sm" style={style}>
       <Navbar>
         <Nav className="me-auto">
           <Nav.Link href="#" as="span">
@@ -148,7 +155,8 @@ const App = () => {
         <Route path="/users" element={<Users users={users} />} />
         <Route path="/" element={<Blogs blogs={blogs} />} />
       </Routes>
-    </div>
+    </Container>
+    // </div>
   )
 }
 
