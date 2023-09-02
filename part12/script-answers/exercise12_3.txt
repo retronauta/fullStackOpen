@@ -1,0 +1,27 @@
+Script started on 2023-09-02 11:28:42-04:00 [TERM="xterm-256color" TTY="/dev/pts/10" COLUMNS="144" LINES="33"]
+
+
+~/Projects/fullStackOpen/part12/script-answers
+❯ %
+~/Projects/fullStackOpen/part12/script-answers on main
+❯
+~/Projects/fullStackOpen/part12/script-answers on main ?1
+❯ docker start -i blissful_montalcini
+root@e2b40cac98e7:/# nano usr/src/app/index.js
+root@e2b40cac98e7:/#cexitsrc/app/index.jsB^B[cWriting...s]BByBB[BWroteo1Llinen]BM-EBMRedoBM-6BMCopyB^QBMWhere Was-]B To Bracket
+exit
+%
+~/Projects/fullStackOpen/part12/script-answers on main ?1									       took 30s
+❯ docker ps -a
+CONTAINER ID   IMAGE	     COMMAND	   CREATED	       STATUS			      PORTS	NAMES
+fe9e3f4b2c01   ubuntu	     "bash"	   56 minutes ago      Exited (0) 30 minutes ago		fervent_grothendieck
+e2b40cac98e7   ubuntu	     "bash"	   About an hour ago   Exited (0) 4 seconds ago			blissful_montalcini
+faf90038bc70   ubuntu	     "bash"	   About an hour ago   Exited (0) 30 minutes ago		friendly_borg
+4296f8415d74   ubuntu	     "/bin/bash"   About an hour ago   Exited (0) 30 minutes ago		ecstatic_keller
+83a3d45b13ad   ubuntu	     "/bin/bash"   About an hour ago   Exited (0) 30 minutes ago		heuristic_sanderson
+56b6f48615e3   hello-world   "/hello"	   About an hour ago   Exited (0) About an hour ago		affectionate_rhodes
+%
+~/Projects/fullStackOpen/part12/script-answers on main ?1
+❯ exit
+
+Script done on 2023-09-02 11:29:33-04:00 [COMMAND_EXIT_CODE="0"]
