@@ -1,0 +1,22 @@
+❯ cd script-answers
+❯ script exercise12_2.txt
+Script started, output log file is 'exercise12_2.txt'.
+❯ docker container run ubuntu
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+445a6a12be2b: Pull complete
+Digest: sha256:aabed3296a3d45cede1dc866a24476c4d7e093aa806263c27ddaadbdce3c1054
+Status: Downloaded newer image for ubuntu:latest
+❯ nvim exercise12_2.txt
+❯ ls
+exercise12_1.txt  exercise12_2.txt
+❯ docker container run ubuntu
+❯ docker container run ubuntu bash
+❯ docker container run -it ubuntu bash
+root@e2b40cac98e7:/# mkdir /usr/s
+sbin/  share/ src/
+root@e2b40cac98e7:/# mkdir /usr/src/app
+root@e2b40cac98e7:/# touch /usr/src/app/index.js
+root@e2b40cac98e7:/# exit
+exit
+❯ exit
