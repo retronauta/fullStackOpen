@@ -13,8 +13,12 @@ router.get("/", async (_, res) => {
 
 /* POST todo to listing. */
 router.post("/", async (req, res) => {
-  qtyAdded += 1
-  await setAsync("added_todos", qtyAdded)
+  let numberTodosAdded = await getAsync("added_todos")
+
+  !numberTodosAdded
+    ? await setAsync("added_todos", 1)
+    : await setAsync("added_todos", Number(numberTodosAdded) + 1)
+
   const todo = await Todo.create({
     text: req.body.text,
     done: false,
