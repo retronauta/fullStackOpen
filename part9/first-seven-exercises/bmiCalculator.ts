@@ -1,11 +1,17 @@
+import {
+  areWrongHeigtWeight,
+  isNotNumber,
+  parseArguments,
+} from './utils/utils';
+
 const calculateBmi = (height: number, weight: number): string => {
   let bmi: number = (weight / height / height) * 10000;
 
   //* Error cases
-  if (height < 0 || weight < 0)
+  if (areWrongHeigtWeight(height, weight))
     throw new Error('Invalid arguments, please insert a number above zero');
 
-  if (isNaN(bmi))
+  if (isNotNumber(bmi))
     throw new Error('Invalid arguments, please only insert valid numbers');
 
   if (bmi < 18.5) {
@@ -19,4 +25,13 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-console.log(calculateBmi(175, 90));
+try {
+  const [value1, value2] = parseArguments(process.argv);
+  console.log(calculateBmi(value1, value2));
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened';
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.error(errorMessage);
+}
