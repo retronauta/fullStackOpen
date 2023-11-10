@@ -46,7 +46,6 @@ const calculateExercises = (
   };
 };
 
-// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
 try {
   const hours = parseArguments(process.argv);
   console.log(calculateExercises(hours, 2));
