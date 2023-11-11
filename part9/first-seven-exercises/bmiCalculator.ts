@@ -1,10 +1,10 @@
 import {
   areWrongHeigtWeight,
   isNotNumber,
-  parseArguments,
+  // parseArguments,
 } from './utils/utils';
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   let bmi: number = (weight / height / height) * 10000;
 
   //* Error cases
@@ -25,13 +25,13 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-try {
-  const [value1, value2] = parseArguments(process.argv);
-  console.log(calculateBmi(value1, value2));
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened';
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.error(errorMessage);
-}
+// try {
+//   const [value1, value2] = parseArguments(process.argv);
+//   console.log(calculateBmi(value1, value2));
+// } catch (error: unknown) {
+//   let errorMessage = 'Something bad happened';
+//   if (error instanceof Error) {
+//     errorMessage += ' Error: ' + error.message;
+//   }
+//   console.error(errorMessage);
+// }
