@@ -1,4 +1,4 @@
-import { averageTime, calcTrainingDays, parseArguments } from './utils/utils';
+import { averageTime, calcTrainingDays } from './utils/utils';
 
 interface Result {
   periodLength: number;
@@ -10,7 +10,7 @@ interface Result {
   average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   dailyHours: number[],
   targetHours: number
 ): Result => {
@@ -46,13 +46,13 @@ const calculateExercises = (
   };
 };
 
-try {
-  const hours = parseArguments(process.argv);
-  console.log(calculateExercises(hours, 2));
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened';
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.error(errorMessage);
-}
+// try {
+//   const hours = parseArguments(process.argv);
+//   console.log(calculateExercises(hours, 2));
+// } catch (error: unknown) {
+//   let errorMessage = 'Something bad happened';
+//   if (error instanceof Error) {
+//     errorMessage += ' Error: ' + error.message;
+//   }
+//   console.error(errorMessage);
+// }
