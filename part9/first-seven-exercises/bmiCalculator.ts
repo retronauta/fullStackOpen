@@ -5,7 +5,7 @@ import {
 } from './utils/utils';
 
 export const calculateBmi = (height: number, weight: number): string => {
-  let bmi: number = (weight / height / height) * 10000;
+  const bmi: number = (weight / height / height) * 10000;
 
   //* Error cases
   if (areWrongHeigtWeight(height, weight))

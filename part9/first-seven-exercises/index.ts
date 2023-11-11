@@ -2,14 +2,14 @@ import express from 'express';
 import { calculateBmi } from './bmiCalculator';
 
 const app = express();
-express.json();
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack');
 });
 
-app.get('/bmi', (_req, res) => {
-  const { height, weight } = _req.query;
+app.get('/bmi', (req, res) => {
+  const { height, weight } = req.query;
 
   try {
     const bmi = calculateBmi(Number(height), Number(weight));

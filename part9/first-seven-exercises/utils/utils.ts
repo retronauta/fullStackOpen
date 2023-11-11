@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isNotNumber = (data: any): boolean => {
   return isNaN(Number(data));
 };
@@ -18,7 +19,7 @@ const areWrongHeigtWeight = (height: number, weight: number): boolean => {
 const parseArguments = (args: string[]) => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
-  let slicedArgs = args.slice(2);
+  const slicedArgs = args.slice(2);
 
   slicedArgs.forEach(item => {
     if (isNotNumber(item)) {
