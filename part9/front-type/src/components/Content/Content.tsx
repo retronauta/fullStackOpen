@@ -1,27 +1,13 @@
-interface contentProps {
-  courseParts: content[];
-}
+// import Part from '../Part/Part';
+import { CoursePart } from '../../types';
+import Part from '../Part/Part';
 
-interface content {
-  name: string;
-  exerciseCount: number;
-}
-
-//* Dos maneras de recibir los props
-// function Content(props: contentProps) {
-function Content({ courseParts }: contentProps) {
-  // const { courseParts } = props;
+function Content({ courseParts }: { courseParts: CoursePart[] }) {
   return (
     <>
-      <p>
-        {courseParts[0].name} {courseParts[0].exerciseCount}
-      </p>
-      <p>
-        {courseParts[1].name} {courseParts[1].exerciseCount}
-      </p>
-      <p>
-        {courseParts[2].name} {courseParts[2].exerciseCount}
-      </p>
+      {courseParts.map(part => {
+        return <Part part={part} key={part.name} />;
+      })}
     </>
   );
 }
