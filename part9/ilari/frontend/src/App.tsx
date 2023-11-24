@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
-import { Diary } from './types';
-import { getAllDiaries } from './services';
-import DiariesArr from './Components/Diaries/Diaries';
+import { Diary, NewDiary } from './types';
+import Diaries from './Components/Diaries/Diaries';
+import diaryService from './services/diary';
+import NewDiaryForm from './Components/NewDiary/NewDiaryForm';
 
 function App() {
   const [diaries, setDiaries] = useState<Diary[]>([]);
 
   // Obteniendo los diarios al cargar la pagina
   useEffect(() => {
-    getAllDiaries().then(data => {
+    diaryService.getAll().then(data => {
       setDiaries(data);
     });
   }, []);
 
+  // Aniadiendo nuevo diario
+  const addDiary = (newDiary: NewDiary) => {
+    diaryService.create(newDiary).then(data => {
+      setDiaries(diaries.concat(data));
+    });
+  };
+
   return (
     <>
-      <DiariesArr diaries={diaries} />
+      <NewDiaryForm addDiary={addDiary} />
+      <Diaries diaries={diaries} />
     </>
   );
 }
