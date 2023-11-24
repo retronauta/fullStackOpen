@@ -3,6 +3,7 @@ export interface Diary {
   date: string;
   weather: string;
   visibility: string;
+  comment?: string;
 }
 
 export interface NewDiary {
@@ -22,4 +23,17 @@ export interface EntryProps {
 
 export interface NewDiaryFormProps {
   addDiary: (newDiary: NewDiary) => void;
+}
+
+export interface ValidationError {
+  message: string;
+  errors: Record<string, string[]>;
+}
+
+export interface Info {
+  message: null | string;
+}
+
+export interface NotificationProps {
+  info: Info;
 }

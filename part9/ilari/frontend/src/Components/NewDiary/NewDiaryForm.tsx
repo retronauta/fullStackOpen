@@ -25,7 +25,6 @@ function NewDiaryForm({ addDiary }: NewDiaryFormProps) {
 
   return (
     <>
-      <h1>Add new entry</h1>
       <form onSubmit={newDiary}>
         Date:
         <input
