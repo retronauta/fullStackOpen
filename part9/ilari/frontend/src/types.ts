@@ -6,34 +6,12 @@ export interface Diary {
   comment?: string;
 }
 
-export interface NewDiary {
-  date: string;
-  weather: string;
-  visibility: string;
-  comment: string;
-}
-
-export interface DiariesProps {
-  diaries: Diary[];
-}
+export type NewDiary = Omit<Diary, 'id'>;
 
 export interface EntryProps {
   entry: Diary;
 }
 
-export interface NewDiaryFormProps {
-  addDiary: (newDiary: NewDiary) => void;
-}
-
-export interface ValidationError {
-  message: string;
-  errors: Record<string, string[]>;
-}
-
 export interface Info {
   message: null | string;
-}
-
-export interface NotificationProps {
-  info: Info;
 }

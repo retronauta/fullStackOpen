@@ -1,4 +1,8 @@
-import { NotificationProps } from '../../types';
+import { Info } from '../../types';
+
+interface NotificationProps {
+  info: Info;
+}
 
 const style = {
   color: 'red',

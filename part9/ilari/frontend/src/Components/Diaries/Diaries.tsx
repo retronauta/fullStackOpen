@@ -1,5 +1,9 @@
-import { DiariesProps } from '../../types';
+import { Diary } from '../../types';
 import DiaryEntry from '../DiaryEntry/DiaryEntry';
+
+interface DiariesProps {
+  diaries: Diary[];
+}
 
 function Diaries({ diaries }: DiariesProps) {
   return (
