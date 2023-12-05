@@ -53,6 +53,17 @@ const isGender = (param: string): param is Gender => {
     .includes(param);
 };
 
+// const parseEntries = (entries: Entry[]): Entry[] => {
+//   return entries;
+// };
+
+export const checkId = (id: string): string => {
+  if (!isString(id)) {
+    throw new Error('id must be a string');
+  }
+  return id;
+};
+
 const toNewPatientEntry = (object: unknown): NewPatient => {
   if (!object || typeof object !== 'object') {
     throw new Error('Incorrect or missing data');
@@ -63,7 +74,8 @@ const toNewPatientEntry = (object: unknown): NewPatient => {
     'dateOfBirth' in object &&
     'ssn' in object &&
     'gender' in object &&
-    'occupation' in object
+    'occupation' in object &&
+    'entries' in object
   ) {
     const newPatient: NewPatient = {
       dateOfBirth: parseDateOfBirth(object.dateOfBirth),
@@ -71,6 +83,7 @@ const toNewPatientEntry = (object: unknown): NewPatient => {
       occupation: parseOccupation(object.occupation),
       name: parseName(object.name),
       ssn: parseSsn(object.ssn),
+      entries: [],
     };
     return newPatient;
   }
