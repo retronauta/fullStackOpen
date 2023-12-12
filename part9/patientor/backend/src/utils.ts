@@ -57,12 +57,6 @@ const isGender = (param: string): param is Gender => {
 //   return entries;
 // };
 
-export const checkId = (id: string): string => {
-  if (!isString(id)) {
-    throw new Error('id must be a string');
-  }
-  return id;
-};
 
 const toNewPatientEntry = (object: unknown): NewPatient => {
   if (!object || typeof object !== 'object') {

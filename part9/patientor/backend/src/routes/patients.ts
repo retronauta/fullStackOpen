@@ -12,7 +12,6 @@ route.get('/:id', (req, res) => {
   const { id } = req.params;
 
   try {
-    // const idValidated = checkId(id);
     const patientFound = patientsService.getPatientById(id);
     if (patientFound) {
       res.status(200).json({ response: patientFound });
