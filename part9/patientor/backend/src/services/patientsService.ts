@@ -1,3 +1,4 @@
+// import patients from '../../data/patients';
 import patients from '../../data/patients';
 import { NewPatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
