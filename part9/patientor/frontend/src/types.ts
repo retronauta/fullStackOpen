@@ -1,4 +1,4 @@
-export interface Diagnosis {
+export interface Diagnose {
   code: string;
   name: string;
   latin?: string;
@@ -32,7 +32,7 @@ export interface BaseEntry {
   description: string;
   date: string;
   specialist: string;
-  diagnosisCodes?: Array<Diagnosis['code']>;
+  diagnosisCodes?: Array<Diagnose['code']>;
 }
 
 export interface HealthCheckEntry extends BaseEntry {
@@ -74,4 +74,4 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
 // Define Entry sin la propiedad 'id'
 export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
-export type patientFormValues = Omit<Patient, 'id' | 'entries'>;
+export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;

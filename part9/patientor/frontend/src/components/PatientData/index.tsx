@@ -1,15 +1,15 @@
 import { Typography } from '@mui/material';
-import { Patient } from '../../types';
+import { Diagnose, Patient } from '../../types';
 import { FaMars, FaVenus, FaVenusMars } from 'react-icons/fa';
 
 interface Props {
   patient: Patient;
+  diagnoses: Diagnose[];
 }
 
-function index({ patient }: Props) {
+function index({ patient, diagnoses }: Props) {
   const { entries } = patient;
   const results = entries.flatMap(entry => entry.diagnosisCodes);
-
   return (
     <>
       <Typography variant="h4" paddingBottom={2} paddingTop={2}>
@@ -40,7 +40,16 @@ function index({ patient }: Props) {
           </div>
           <ul>
             {results.map(dx => {
-              if (dx) return <li>{dx}</li>;
+              if (dx) {
+                const dxName = (
+                  diagnoses.find(diagnose => diagnose.code === dx) as Diagnose
+                ).name;
+                return (
+                  <li key={dx}>
+                    {dx}: {dxName}
+                  </li>
+                );
+              }
               return null;
             })}
           </ul>
