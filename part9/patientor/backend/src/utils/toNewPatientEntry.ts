@@ -1,4 +1,4 @@
-import { Gender, NewPatient } from './types';
+import { Gender, NewPatient } from '../types';
 
 // comprobar si es un string
 const isString = (str: unknown): str is string => {
