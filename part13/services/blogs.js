@@ -1,4 +1,4 @@
-const Blog = require('../models/blogs');
+const Blog = require('../models/blog');
 
 const getBlogs = async (req, res) => {
   try {
@@ -15,29 +15,31 @@ const postBlog = async (req, res) => {
   console.log('body', req.body);
   try {
     const blog = await Blog.create(req.body);
-    return res.json(blog);
+    res.json(blog);
   } catch (error) {
     res.status(400).json({ error });
   }
 };
 
 const deleteBlog = async (req, res) => {
-  const { id } = req.params;
-  const blog = await Blog.findByPk(id);
   try {
-    if (blog) {
-      await Blog.destroy({
-        where: {
-          id: id,
-        },
-      });
-      res.json({ success: true });
+    if (req.blog) {
+      await req.blog.destroy();
     } else {
-      res.json({ sucess: false });
+      res.json({ message: 'Blog not found' });
     }
+    res.status(204).end();
   } catch (error) {
     res.status(400).json({ error });
   }
 };
 
-module.exports = { getBlogs, postBlog, deleteBlog };
+const getById = async (req, res) => {
+  if (req.blog) {
+    res.json(req.blog);
+  } else {
+    res.status(404).end();
+  }
+};
+
+module.exports = { getBlogs, postBlog, deleteBlog, getById };

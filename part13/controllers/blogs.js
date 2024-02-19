@@ -1,13 +1,19 @@
-const blogsRouter = require('express').Router();
-
+const router = require('express').Router();
+const { Blog } = require('../models');
 const blogService = require('../services/blogs');
 
-blogsRouter.get('/ping', (req, res) => {
+const blogFinder = async (req, res, next) => {
+  req.blog = await Blog.findByPk(req.params.id);
+  next();
+};
+
+router.get('/ping', (req, res) => {
   res.status(200).send('pong');
 });
 
-blogsRouter.get('/', blogService.getBlogs);
-blogsRouter.post('/', blogService.postBlog);
-blogsRouter.delete('/:id', blogService.deleteBlog);
+router.get('/', blogService.getBlogs);
+router.get('/:id', blogFinder, blogService.getById);
+router.post('/', blogService.postBlog);
+router.delete('/:id', blogFinder, blogService.deleteBlog);
 
-module.exports = blogsRouter;
+module.exports = router;
