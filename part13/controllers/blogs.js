@@ -15,5 +15,6 @@ router.get('/', blogService.getBlogs);
 router.get('/:id', blogFinder, blogService.getById);
 router.post('/', blogService.postBlog);
 router.delete('/:id', blogFinder, blogService.deleteBlog);
+router.put('/:id', blogFinder, blogService.updateLikes);
 
 module.exports = router;

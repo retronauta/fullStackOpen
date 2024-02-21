@@ -42,4 +42,15 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { getBlogs, postBlog, deleteBlog, getById };
+const updateLikes = async (req, res) => {
+  // console.log({ body: req.body, blog: JSON.stringify(req.blog, null, 2) });
+  if (req.blog) {
+    req.blog.likes = req.body.likes;
+    await req.blog.save();
+    res.json(req.blog);
+  } else {
+    res.status(404).end();
+  }
+};
+
+module.exports = { getBlogs, postBlog, deleteBlog, getById, updateLikes };
