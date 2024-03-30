@@ -1,0 +1,9 @@
+Script started on 2024-03-29 00:15:47-04:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="70" LINES="41"]
+docker container run -it ubuntu bash
+root@8d9b73d51929:/# mkdir /usr/src/app
+root@8d9b73d51929:/# touch /usr/src/app/index.js
+root@8d9b73d51929:/# exit
+exit
+exit
+
+Script done on 2024-03-29 00:16:31-04:00 [COMMAND_EXIT_CODE="0"]

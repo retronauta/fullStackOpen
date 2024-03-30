@@ -1,0 +1,17 @@
+node_modules/
+dist/
+
+.env
+
+.vscode
+
+__tests__/
+*.test.js
+
+Dockerfile
+docker-compose.yml
+
+.git/
+.gitignore
+
+.dockerignore
